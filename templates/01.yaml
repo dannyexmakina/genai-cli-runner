@@ -1,0 +1,40 @@
+workdir: ./
+tempdir: ./tmp
+output: ./output.md
+timeout: 10m
+env:
+  ENV: development
+steps:
+  - input:
+      - ./foo.md
+      - ./bar.md
+    run:
+      - type: claude
+        args:
+          - --model
+          - claude-opus-5-5
+      - type: ollama
+        args:
+          - llama3.2
+    expected:
+      - type: string
+        key: joke
+        value: |
+          This is a test output.
+      - type: object
+        key: metadata
+        value:
+          key1: value1
+          key2: value2
+      - type: array
+        key: items
+        value:
+          - {"item": "value1"}
+          - {"item": "value2"}
+  - input:
+      - ./prompt.md
+    run:
+      - type: claude
+        args:
+          - --model
+          - claude-sonnet-5-5
